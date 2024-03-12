@@ -1,6 +1,7 @@
 html {
   cursor: none;
   overflow: hidden;
+  touch-action: none;
 }
 .pointer {
   position: absolute;
