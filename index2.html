@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  </head>
-  <body>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - image follow mouse cursor pointer</title>
+  <link rel="stylesheet" href="./stylesheet.css">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-       
-    <h1>HTML Geolocation</h1>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+  <h1>HTML Geolocation</h1>
     <p>Click the button to get your coordinates.</p>
 
     <button onclick="getLocation()">Try It</button>
@@ -16,34 +27,30 @@
 
     <p id="demo"></p>
 
+	<div class="pointer"> <img src="blue_circle.png" class="gif" alt=""> </div>
 
-    <div class="pointer">
-      <img src="blue_circle.png" />
-    </div>
 
-    <script>
-      const x = document.getElementById("demo");
-  
-      function getLocation() {
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-      } else { 
-          x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-      }
-  
-      function showPosition(position) {
-      x.innerHTML = "Latitude: " + position.coords.latitude + 
-      "<br>Longitude: " + position.coords.longitude;
-      }
-      </script>
+  <script>
+    const x = document.getElementById("demo");
 
-    
+    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+    }
 
-   
+    function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude;
+    }
+    </script>
 
-    
-<script  src="./script.js"></script>
-    
-  </body>
+</body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
 </html>
