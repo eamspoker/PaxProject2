@@ -3,6 +3,11 @@ html {
   overflow: hidden;
   touch-action: none;
 }
+
+body {
+  color: white;
+  background-color: black;
+}
 .pointer {
   position: absolute;
   height: 50px;

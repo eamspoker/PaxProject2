@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<link rel="stylesheet" href="stylesheet.css">
-
-</head>
-<body>
-
-  <h1>HTML Geolocation</h1>
-    <p>Click the button to get your coordinates.</p>
-
-    <button onclick="getLocation()">Try It</button>
-  
-    <p id="demo"></p>
-
-  <style>
+<style>
     #canvas_div {
         text-align: center;
         display: block;
@@ -140,24 +122,3 @@
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
     </script>
-
-  <script>
-    const x = document.getElementById("demo");
-
-    function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-    }
-
-    function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude;
-    }
-    </script>
-
-</body>
-</html>
-
