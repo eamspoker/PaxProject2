@@ -9,28 +9,196 @@
 
 </head>
 <body>
-    <button onclick="getLocation()">Try It</button>
-  
+    <button id="investigate" onclick="getLocation()">Investigate Area</button>
+
+    <div style="display:inline-block">
     <p id="demo"></p>
 
-    <iframe src="https://www.autodraw.com/" width="1000" height="500">
-    </iframe>
-    
+    <button onclick="showCanvas()" id="finishbutton" style="display:none">I've found it!</button>
+  </div>
+    <img id="matching" style="width:200px; height:200px; display:inline-block">
+
+    <div id="drawing" style="display:none">
+      <div>
+    <button onclick="javascript:clearArea();return false;">Clear Canvas</button>
+    Line width : <select id="selWidth">
+        <option value="11">11</option>
+        <option value="13" selected="selected">13</option>
+        <option value="15">15</option>
+    </select>
+    Color : <select id="selColor">
+        <option value="black">white</option>
+        <option value="blue" selected="selected">blue</option>
+        <option value="red">red</option>
+        <option value="green">green</option>
+        <option value="yellow">yellow</option>
+        <option value="gray">gray</option>
+        <option value="black">erase</option>
+    </select>
+  </div>
+  
+
+    <style>
+      #canvas_div {
+          text-align: center;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+      }
+      canvas {
+        border: 2px solid white;
+        background-color: black;
+      }
+  
+      </style>
+      
+      <div id="canvas_div" style="overflow-x: auto;">
+      <canvas id="canvas" width="900" height="360"></canvas>
+
+      </div>
+    </div>
+      
+      <script>
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+      const viewport = window.visualViewport;
+      var offsetX;
+      var offsetY;
+      
+      function startup() {
+        canvas.addEventListener('touchstart', handleStart);
+        canvas.addEventListener('touchend', handleEnd);
+        canvas.addEventListener('touchcancel', handleCancel);
+        canvas.addEventListener('touchmove', handleMove);
+      }
+      
+      document.addEventListener("DOMContentLoaded", startup);
+      
+      const ongoingTouches = [];
+      
+      function handleStart(evt) {
+        evt.preventDefault();
+        const touches = evt.changedTouches;
+        offsetX = canvas.getBoundingClientRect().left;
+        offsetY = canvas.getBoundingClientRect().top;
+        console.log(offsetX, offsetY)
+        for (let i = 0; i < touches.length; i++) {
+          ongoingTouches.push(copyTouch(touches[i]));
+        }
+      }
+      
+      function handleMove(evt) {
+        evt.preventDefault();
+        const touches = evt.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+          const color = document.getElementById('selColor').value;
+          const idx = ongoingTouchIndexById(touches[i].identifier);
+          if (idx >= 0) {
+            context.beginPath();
+            context.moveTo(ongoingTouches[idx].clientX - offsetX, ongoingTouches[idx].clientY - offsetY);
+            context.lineTo(touches[i].clientX - offsetX, touches[i].clientY - offsetY);
+            context.lineWidth = document.getElementById('selWidth').value;
+            context.strokeStyle = color;
+            context.lineJoin = "round";
+            context.closePath();
+            context.stroke();
+            ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+          }
+        }
+      }
+      
+      function handleEnd(evt) {
+        evt.preventDefault();
+        const touches = evt.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+          const color = document.getElementById('selColor').value;
+          let idx = ongoingTouchIndexById(touches[i].identifier);
+          if (idx >= 0) {
+            context.lineWidth = document.getElementById('selWidth').value;
+            context.fillStyle = color;
+            ongoingTouches.splice(idx, 1);  // remove it; we're done
+          }
+        }
+      }
+      
+      function handleCancel(evt) {
+        evt.preventDefault();
+        const touches = evt.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+          let idx = ongoingTouchIndexById(touches[i].identifier);
+          ongoingTouches.splice(idx, 1);  // remove it; we're done
+        }
+      }
+      
+      function copyTouch({ identifier, clientX, clientY }) {
+        return { identifier, clientX, clientY };
+      }
+      
+      function ongoingTouchIndexById(idToFind) {
+        for (let i = 0; i < ongoingTouches.length; i++) {
+          const id = ongoingTouches[i].identifier;
+          if (id === idToFind) {
+            return i;
+          }
+        }
+        return -1;    // not found
+      }
+      
+      function clearArea() {
+          context.setTransform(1, 0, 0, 1, 0, 0);
+          context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+      }
+      </script>
 
   <script>
     const x = document.getElementById("demo");
+    const matching = document.getElementById("matching");
+    const drawing = document.getElementById("drawing");
+    const finishbutton = document.getElementById("finishbutton");
+    const investigate = document.getElementById("investigate");
+    const locationList = [
+     [ "40.4368861", "-79.9202242", "Your Home", "blue_circle.png"],
+     [ "40.44273119577844", "-79.94582631471607", "Scaife Hall", "blue_circle.png"]
+  ];
+
 
     function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
+      x.innerHTML= "Loading...";
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+          x.innerHTML = "Geolocation is not supported by this browser.";
+      }
     }
-    }
+    
 
     function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude;
+      
+      let lat = position.coords.latitude;
+      let long = position.coords.longitude;
+     locationList.forEach(list => {
+      if (Math.abs(parseFloat(list[0]-lat)) < 0.001 && 
+          Math.abs(parseFloat(list[1]-long)) < 0.001 )
+      {
+        let name = list[2];
+        let img = list[3];
+        x.innerHTML= "Welcome to " + name + ". It is your mission to find the object below and align it with your field of view.";
+        matching.src = img;
+        finishbutton.style.display ="block";
+        investigate.style.display = "none";
+        
+
+      }
+     });
+     
+
+
+    }
+
+    function showCanvas()
+    {
+      drawing.style.display = "inline-block";
+      finishbutton.style.display = "none";
     }
     </script>
 
