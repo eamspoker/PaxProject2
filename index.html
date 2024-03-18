@@ -9,6 +9,9 @@
 
 </head>
 <body>
+  <div style="position: fixed !important; margin-left:75%">
+    <img id="matching" style="width: 200px; height:200px; display:inline-block; position: fixed !important;">
+  </div>
     <button class="button-30" id="investigate" onclick="getLocation()">Investigate Area</button>
 
     <div style="display:inline-block">
@@ -16,9 +19,8 @@
 
     <button class="button-30" onclick="showCanvas()" id="finishbutton" style="display:none">I've found it!</button>
   </div>
-    <img id="matching" style="width:200px; height:200px; display:inline-block">
 
-    <div id="drawing" style="display:none">
+    <div id="drawing" style="visibility:hidden;display: inline-block;">
       <div>
     <button class="button-30" onclick="javascript:clearArea();return false;">Clear Canvas</button>
     Line width : <select id="selWidth" class="button-30">
@@ -57,7 +59,7 @@
 
       </div>
     </div>
-      
+    
       <script>
       const canvas = document.getElementById('canvas');
       const context = canvas.getContext('2d');
@@ -197,7 +199,7 @@
 
     function showCanvas()
     {
-      drawing.style.display = "inline-block";
+      drawing.style.visibility = "visible";
       finishbutton.style.display = "none";
     }
     </script>
