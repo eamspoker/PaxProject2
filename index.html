@@ -24,9 +24,10 @@
       <div>
     <button class="button-30" onclick="javascript:clearArea();return false;">Clear Canvas</button>
     Line width : <select id="selWidth" class="button-30">
-        <option value="11">11</option>
-        <option value="13" selected="selected">13</option>
-        <option value="15">15</option>
+        <option value="10">10</option>
+        <option value="16" selected="selected">16</option>
+        <option value="24">24</option>
+        <option value="32">32</option>
     </select>
     Color : <select id="selColor"  class="button-30">
         <option value="black">white</option>
@@ -190,7 +191,7 @@
       {
         let name = list[2];
         let img = list[3];
-        x.innerHTML= "Welcome to " + name + ". Find and align this image:";
+        x.innerHTML= "Welcome to " + name + ". MISSION: Find this area";
         matching.src = img;
         finishbutton.style.display ="block";
         investigate.style.display = "none";
@@ -205,6 +206,7 @@
 
     function showCanvas()
     {
+      x.innerHTML= "Great work! MISSION: Draw changes to the area.";
       drawing.style.visibility = "visible";
       finishbutton.style.display = "none";
     }
