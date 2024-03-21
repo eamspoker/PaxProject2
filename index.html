@@ -160,7 +160,7 @@
     const finishbutton = document.getElementById("finishbutton");
     const investigate = document.getElementById("investigate");
     const locationList = [
-     [ "40.4368861", "-79.9202242", "Your Home", "blue_circle.png"],
+     [ "40.4414784", "-79.9247818", "Your House", "house.JPG"],
      [ "40.44273119577844", "-79.94582631471607", "Scaife Hall", "blue_circle.png"],
      ["40.44323312209316", "-79.94423103211369", "Pausch Bridge", "bridge.jpeg"],
      ["40.4435232", "-79.9443349", "Gates 4", "gates.png"],
@@ -183,9 +183,7 @@
       
       let lat = position.coords.latitude;
       let long = position.coords.longitude;
-      console.log(lat+", "+long);
      locationList.forEach(list => {
-      console.log(list);
       if (Math.abs(parseFloat(list[0]-lat)) < 0.001 && 
           Math.abs(parseFloat(list[1]-long)) < 0.001 )
       {
