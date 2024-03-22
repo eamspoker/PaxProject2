@@ -185,8 +185,8 @@
       let lat = position.coords.latitude;
       let long = position.coords.longitude;
      locationList.forEach(list => {
-      if (Math.abs(parseFloat(list[0]-lat)) < 0.001 && 
-          Math.abs(parseFloat(list[1]-long)) < 0.001 )
+      if (Math.abs(parseFloat(list[0]-lat)) < 0.0005 && 
+          Math.abs(parseFloat(list[1]-long)) < 0.0005 )
       {
         let name = list[2];
         let img = list[3];
